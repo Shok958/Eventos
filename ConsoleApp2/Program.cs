@@ -10,19 +10,40 @@ namespace Eventos
     {
         static void Main(string[] args)
         {
+            var caja = new Caja() { };
+            caja.Total += Caja_Total;
+        }
+
+        private static void Caja_Total(object o, TotalEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 
     class Ticket
     {
-
+        public int Id { get; set; }
     }
 
     class Caja
     {
-
+        public event TotalEventHandler Total;
         public Caja() {
             this.tickets = new List<Ticket>();
+        }
+
+        public virtual void OnTotal(TotalEventArgs e) {
+
+            /*if (null !=Total)
+            {//aqui el sistema puede fallar en caso de quedarte sin suscriptores
+                Total(this, e);            
+            }*/
+
+            var handler = Total;
+            if (null != handler) {
+                handler(this, e);
+            }
+
         }
 
         public int Id { get; set; }
